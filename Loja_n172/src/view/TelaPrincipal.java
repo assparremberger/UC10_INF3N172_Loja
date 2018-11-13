@@ -32,11 +32,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        menuCidadeCadastrar = new javax.swing.JMenuItem();
+        menuCidadeListar = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        menuClienteCadastrar = new javax.swing.JMenuItem();
+        menuClienteListar = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
 
@@ -48,11 +48,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jdpPainel.setLayout(jdpPainelLayout);
         jdpPainelLayout.setHorizontalGroup(
             jdpPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 950, Short.MAX_VALUE)
         );
         jdpPainelLayout.setVerticalGroup(
             jdpPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGap(0, 679, Short.MAX_VALUE)
         );
 
         jMenu1.setText("Arquivo");
@@ -64,23 +64,34 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenu2.setText("Cidade");
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem2.setText("Cadastrar");
-        jMenu2.add(jMenuItem2);
+        menuCidadeCadastrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
+        menuCidadeCadastrar.setText("Cadastrar");
+        menuCidadeCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCidadeCadastrarActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuCidadeCadastrar);
 
-        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem3.setText("Listar");
-        jMenu2.add(jMenuItem3);
+        menuCidadeListar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK));
+        menuCidadeListar.setText("Listar");
+        jMenu2.add(menuCidadeListar);
 
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Cliente");
 
-        jMenuItem4.setText("Cadastrar");
-        jMenu3.add(jMenuItem4);
+        menuClienteCadastrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_MASK));
+        menuClienteCadastrar.setText("Cadastrar");
+        menuClienteCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuClienteCadastrarActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuClienteCadastrar);
 
-        jMenuItem5.setText("Listar");
-        jMenu3.add(jMenuItem5);
+        menuClienteListar.setText("Listar");
+        jMenu3.add(menuClienteListar);
 
         jMenuBar1.add(jMenu3);
 
@@ -105,6 +116,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuCidadeCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCidadeCadastrarActionPerformed
+        FrmCidade tela = new FrmCidade();
+        jdpPainel.add(tela);
+        tela.setVisible(true);
+    }//GEN-LAST:event_menuCidadeCadastrarActionPerformed
+
+    private void menuClienteCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClienteCadastrarActionPerformed
+        FrmCliente tela = new FrmCliente();
+        jdpPainel.add(tela);
+        tela.setVisible(true);
+    }//GEN-LAST:event_menuClienteCadastrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -149,10 +172,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JDesktopPane jdpPainel;
+    private javax.swing.JMenuItem menuCidadeCadastrar;
+    private javax.swing.JMenuItem menuCidadeListar;
+    private javax.swing.JMenuItem menuClienteCadastrar;
+    private javax.swing.JMenuItem menuClienteListar;
     // End of variables declaration//GEN-END:variables
 }
