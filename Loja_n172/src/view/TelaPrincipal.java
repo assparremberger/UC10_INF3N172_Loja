@@ -42,7 +42,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Loja N172");
-        setPreferredSize(new java.awt.Dimension(950, 700));
 
         javax.swing.GroupLayout jdpPainelLayout = new javax.swing.GroupLayout(jdpPainel);
         jdpPainel.setLayout(jdpPainelLayout);
@@ -75,6 +74,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         menuCidadeListar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK));
         menuCidadeListar.setText("Listar");
+        menuCidadeListar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCidadeListarActionPerformed(evt);
+            }
+        });
         jMenu2.add(menuCidadeListar);
 
         jMenuBar1.add(jMenu2);
@@ -91,6 +95,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenu3.add(menuClienteCadastrar);
 
         menuClienteListar.setText("Listar");
+        menuClienteListar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuClienteListarActionPerformed(evt);
+            }
+        });
         jMenu3.add(menuClienteListar);
 
         jMenuBar1.add(jMenu3);
@@ -128,6 +137,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jdpPainel.add(tela);
         tela.setVisible(true);
     }//GEN-LAST:event_menuClienteCadastrarActionPerformed
+
+    private void menuCidadeListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCidadeListarActionPerformed
+        ListCidades tela = new ListCidades();
+        jdpPainel.add(tela);
+        tela.setVisible(true);
+    }//GEN-LAST:event_menuCidadeListarActionPerformed
+
+    private void menuClienteListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClienteListarActionPerformed
+        ListClientes tela = new ListClientes();
+        jdpPainel.add(tela);
+        tela.setVisible(true);
+    }//GEN-LAST:event_menuClienteListarActionPerformed
 
     /**
      * @param args the command line arguments
