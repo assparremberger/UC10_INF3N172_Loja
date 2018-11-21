@@ -5,6 +5,12 @@
  */
 package view;
 
+import dao.CidadeDAO;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Cidade;
+
 /**
  *
  * @author assparremberger
@@ -16,7 +22,25 @@ public class ListCidades extends javax.swing.JInternalFrame {
      */
     public ListCidades() {
         initComponents();
+        carregarTabela();
     }
+    public void carregarTabela(){
+        List<Cidade> lista = CidadeDAO.getCidades();
+        DefaultTableModel model = new DefaultTableModel();
+        String[] colunas = {"Código", "Nome da Cidade", "Estado"};
+        model.setColumnIdentifiers( colunas );
+        
+        for (Cidade cid : lista) {
+            Object[] linha = {
+                cid.getCodigo() ,
+                cid.getNome() ,
+                cid.getEstado().getNome()
+            };
+            model.addRow( linha );
+        }
+        tableCidades.setModel( model );
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,6 +78,11 @@ public class ListCidades extends javax.swing.JInternalFrame {
 
         btnExcluir.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -91,6 +120,20 @@ public class ListCidades extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int linha = tableCidades.getSelectedRow();
+        if( linha < 0 ){
+            JOptionPane.showMessageDialog(this, "Você deve selecionar uma cidade!");
+        }else{
+            int codigo = (int) tableCidades.getValueAt(linha, 0);
+            Cidade cidade = new Cidade();
+            cidade.setCodigo(codigo);
+            CidadeDAO.excluir(cidade);
+            carregarTabela();
+            
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

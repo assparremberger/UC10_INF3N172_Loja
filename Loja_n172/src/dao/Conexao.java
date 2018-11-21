@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,8 +23,10 @@ public class Conexao {
             Class.forName(DRIVER);
             Connection conn = DriverManager.getConnection(URL, USUARIO, SENHA);
             Statement st = conn.createStatement();
-            return st.execute(sql);
+            st.execute(sql);
+            return true;
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString());
             return false;
         }
     }
@@ -35,6 +38,7 @@ public class Conexao {
             Statement st = conn.createStatement();
             return st.executeQuery(sql);
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString());
             return null;
         }
     }
