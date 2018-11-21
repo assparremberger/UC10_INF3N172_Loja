@@ -16,15 +16,17 @@ public class EstadoDAO {
         String sql = "SELECT codigo, nome FROM estados";
         ResultSet rs = Conexao.consultar( sql );
         List<Estado> lista = new ArrayList<>();
+        System.out.println("oi 03");
         if( rs != null ){
             
             try {
-                
+                System.out.println("oi 01");
                 while ( rs.next() ) {                    
                     Estado est = new Estado();
                     est.setCodigo( rs.getInt( "codigo" ) );
                     est.setNome( rs.getString( "nome" ) );
                     lista.add( est );
+                    System.out.println("oi 02");
                 }
                 
             } catch (Exception e) {

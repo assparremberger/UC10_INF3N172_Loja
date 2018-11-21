@@ -5,6 +5,15 @@
  */
 package view;
 
+import dao.CidadeDAO;
+import dao.EstadoDAO;
+import java.util.List;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import model.Cidade;
+import model.Estado;
+
 /**
  *
  * @author assparremberger
@@ -18,12 +27,27 @@ public class FrmCidade extends javax.swing.JInternalFrame {
         initComponents();
         lblCodigo.setVisible(false);
         lblCodigoValor.setVisible(false);
+        carregarEstados();
     }
     
     public FrmCidade(int codigo) {
         initComponents();
         lblCodigo.setVisible(true);
         lblCodigoValor.setVisible(true);
+        carregarEstados();
+    }
+    
+    private void carregarEstados(){
+        List<Estado> lista = EstadoDAO.getEstados();
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        
+        Estado fake = new Estado("Selecione...");
+        model.addElement(fake);
+        
+        for (Estado estado : lista) {
+            model.addElement( estado );
+        }
+        cmbEstado.setModel( model );
     }
 
     /**
@@ -62,6 +86,11 @@ public class FrmCidade extends javax.swing.JInternalFrame {
 
         btnSalvar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Estado: ");
@@ -127,6 +156,25 @@ public class FrmCidade extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        
+        String nome = txtNome.getText();
+        
+        if( nome.isEmpty() || cmbEstado.getSelectedIndex() == 0 ){
+            JOptionPane.showMessageDialog(null, 
+                    "Nome e Estado são obrigatórios!" );
+        }else{
+            Cidade cidade = new Cidade();
+            cidade.setNome( nome );
+            cidade.setEstado( (Estado) cmbEstado.getSelectedItem() );
+            CidadeDAO.inserir(cidade);
+            // limpar o formulário
+            txtNome.setText("");
+            cmbEstado.setSelectedIndex( 0 );
+        }
+        
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

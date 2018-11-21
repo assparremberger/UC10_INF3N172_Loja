@@ -4,10 +4,17 @@ package model;
  *
  * @author assparremberger
  */
-public class Estado {
+public class Estado{
     
     private int codigo;
     private String nome;
+
+    @Override
+    public String toString() {
+        return nome; 
+    }
+    
+    
     
     public Estado(){
     }
