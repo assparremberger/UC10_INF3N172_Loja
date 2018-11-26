@@ -139,7 +139,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuClienteCadastrarActionPerformed
 
     private void menuCidadeListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCidadeListarActionPerformed
-        ListCidades tela = new ListCidades();
+        ListCidades tela = new ListCidades(jdpPainel);
         jdpPainel.add(tela);
         tela.setVisible(true);
     }//GEN-LAST:event_menuCidadeListarActionPerformed

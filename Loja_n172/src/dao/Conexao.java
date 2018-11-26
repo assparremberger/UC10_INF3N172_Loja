@@ -12,9 +12,11 @@ import javax.swing.JOptionPane;
  */
 public class Conexao {
     
-    private static final String URL = "jdbc:mysql://localhost:3306/loja_n172?zeroDateTimeBehavior=convertToNull";
-    private static final String USUARIO = "root";
-    private static final String SENHA = "";
+    private static final String BANCO = "n172_adalto_loja";
+    private static final String LOCAL = "senacinfo-db";
+    private static final String URL = "jdbc:mysql://" + LOCAL + ":3306/" + BANCO + "?zeroDateTimeBehavior=convertToNull";
+    private static final String USUARIO = "assparremberger";
+    private static final String SENHA = "senacrs";
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     
     

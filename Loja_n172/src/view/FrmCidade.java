@@ -23,11 +23,15 @@ public class FrmCidade extends javax.swing.JInternalFrame {
     /**
      * Creates new form FrmCidade
      */
+    
+    private Cidade cidade;
+    
     public FrmCidade() {
         initComponents();
         lblCodigo.setVisible(false);
         lblCodigoValor.setVisible(false);
         carregarEstados();
+        cidade = null;
     }
     
     public FrmCidade(int codigo) {
@@ -35,6 +39,23 @@ public class FrmCidade extends javax.swing.JInternalFrame {
         lblCodigo.setVisible(true);
         lblCodigoValor.setVisible(true);
         carregarEstados();
+        cidade = CidadeDAO.getCidadeByCodigo(codigo);
+        carregarFormulario();
+    }
+    
+    private void carregarFormulario(){
+        lblCodigoValor.setText( String.valueOf( cidade.getCodigo( )) );
+        txtNome.setText( cidade.getNome() );
+        
+        List<Estado> estados = EstadoDAO.getEstados();
+        for( int i = 0; i < estados.size(); i++){
+            if( estados.get(i).getCodigo() == cidade.getEstado().getCodigo() ){
+                int posicao = i + 1;
+                cmbEstado.setSelectedIndex(posicao);
+                break;
+            }
+        }
+        
     }
     
     private void carregarEstados(){
@@ -165,10 +186,19 @@ public class FrmCidade extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, 
                     "Nome e Estado são obrigatórios!" );
         }else{
-            Cidade cidade = new Cidade();
+            boolean nova = false;
+            if( cidade == null ){
+                nova = true;
+                cidade = new Cidade();
+            }
+            
             cidade.setNome( nome );
             cidade.setEstado( (Estado) cmbEstado.getSelectedItem() );
-            CidadeDAO.inserir(cidade);
+            if( nova ){
+                CidadeDAO.inserir(cidade);
+            }else{
+                CidadeDAO.editar( cidade );
+            }
             // limpar o formulário
             txtNome.setText("");
             cmbEstado.setSelectedIndex( 0 );

@@ -6,10 +6,14 @@
 package view;
 
 import dao.CidadeDAO;
+import dao.EstadoDAO;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Cidade;
+import model.Estado;
 
 /**
  *
@@ -20,12 +24,39 @@ public class ListCidades extends javax.swing.JInternalFrame {
     /**
      * Creates new form ListCidades
      */
-    public ListCidades() {
+    public JDesktopPane jdpTelaInicial;
+    
+    public ListCidades(JDesktopPane jdpPainel) {
         initComponents();
+        carregarEstados();
         carregarTabela();
+        this.jdpTelaInicial = jdpPainel;
     }
-    public void carregarTabela(){
-        List<Cidade> lista = CidadeDAO.getCidades();
+    
+    private void carregarEstados(){
+        
+        List<Estado> lista = EstadoDAO.getEstados();
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        Estado fake = new Estado("Todas as cidades...");
+        fake.setCodigo( 0 );
+        model.addElement(fake);
+        for (Estado estado : lista) {
+            model.addElement( estado );
+        }
+        cmbEstados.setModel( model );
+    }
+    
+    public void carregarTabela( ){
+        Estado estadoSelecionado = (Estado) cmbEstados.getSelectedItem();
+        
+        List<Cidade> lista;
+        int codigo = estadoSelecionado.getCodigo();
+        if( codigo == 0 ){
+            lista = CidadeDAO.getCidades();
+        }else{
+            lista = CidadeDAO.getCidades(codigo);
+        }
+        
         DefaultTableModel model = new DefaultTableModel();
         String[] colunas = {"Código", "Nome da Cidade", "Estado"};
         model.setColumnIdentifiers( colunas );
@@ -56,6 +87,8 @@ public class ListCidades extends javax.swing.JInternalFrame {
         tableCidades = new javax.swing.JTable();
         btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        cmbEstados = new javax.swing.JComboBox<>();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Lista de Cidades");
@@ -75,6 +108,11 @@ public class ListCidades extends javax.swing.JInternalFrame {
 
         btnEditar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnExcluir.setText("Excluir");
@@ -84,21 +122,40 @@ public class ListCidades extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setText("Estado: ");
+
+        cmbEstados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbEstados.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbEstadosItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(168, 168, 168)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(168, 168, 168)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmbEstados, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -108,13 +165,17 @@ public class ListCidades extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(64, 64, 64)
                         .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(42, 42, 42)
-                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(cmbEstados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -126,20 +187,47 @@ public class ListCidades extends javax.swing.JInternalFrame {
         if( linha < 0 ){
             JOptionPane.showMessageDialog(this, "Você deve selecionar uma cidade!");
         }else{
-            int codigo = (int) tableCidades.getValueAt(linha, 0);
-            Cidade cidade = new Cidade();
-            cidade.setCodigo(codigo);
-            CidadeDAO.excluir(cidade);
-            carregarTabela();
+            int codigo =     (int) tableCidades.getValueAt(linha, 0);
+            String nome = (String) tableCidades.getValueAt(linha, 1);
+            
+            int resposta = JOptionPane.showConfirmDialog(this, 
+                    "Confirma a exclusão da cidade " + nome + "?", 
+                    "Excluir Cidade", JOptionPane.YES_NO_OPTION );
+            if( resposta == JOptionPane.YES_OPTION ){
+                Cidade cidade = new Cidade();
+                cidade.setCodigo(codigo);
+                CidadeDAO.excluir(cidade);
+                carregarTabela();
+            }
             
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        int linha = tableCidades.getSelectedRow();
+        if( linha < 0 ){
+            JOptionPane.showMessageDialog(this, 
+                    "Você deve selecionar uma cidade!");
+        }else{
+            int codigo = (int) tableCidades.getValueAt(linha, 0);
+            FrmCidade tela = new FrmCidade(codigo);
+            jdpTelaInicial.add(tela);
+            tela.setVisible(true);
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void cmbEstadosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbEstadosItemStateChanged
+        
+        carregarTabela( );
+    }//GEN-LAST:event_cmbEstadosItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JComboBox<String> cmbEstados;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableCidades;
     // End of variables declaration//GEN-END:variables
