@@ -5,15 +5,13 @@
         <group>
             <file>file:/C:/Users/assparremberger/Documents/NetBeansProjects/Loja/Loja_n172/src/dao/Conexao.java</file>
             <file>file:/C:/Users/assparremberger/Documents/NetBeansProjects/Loja/Loja_n172/src/model/Cidade.java</file>
-            <file>file:/C:/Users/assparremberger/Documents/NetBeansProjects/Loja/Loja_n172/src/model/Estado.java</file>
             <file>file:/C:/Users/assparremberger/Documents/NetBeansProjects/Loja/Loja_n172/src/view/FrmCliente.java</file>
             <file>file:/C:/Users/assparremberger/Documents/NetBeansProjects/Loja/Loja_n172/src/model/Cliente.java</file>
             <file>file:/C:/Users/assparremberger/Documents/NetBeansProjects/Loja/Loja_n172/src/view/ListCidades.java</file>
-            <file>file:/C:/Users/assparremberger/Documents/NetBeansProjects/Loja/Loja_n172/src/view/ListClientes.java</file>
             <file>file:/C:/Users/assparremberger/Documents/NetBeansProjects/Loja/Loja_n172/src/view/TelaPrincipal.java</file>
             <file>file:/C:/Users/assparremberger/Documents/NetBeansProjects/Loja/Loja_n172/src/dao/CidadeDAO.java</file>
-            <file>file:/C:/Users/assparremberger/Documents/NetBeansProjects/Loja/Loja_n172/src/dao/EstadoDAO.java</file>
             <file>file:/C:/Users/assparremberger/Documents/NetBeansProjects/Loja/Loja_n172/src/view/FrmCidade.java</file>
+            <file>file:/C:/Users/assparremberger/Documents/NetBeansProjects/Loja/Loja_n172/src/dao/ClienteDAO.java</file>
         </group>
     </open-files>
 </project-private>
