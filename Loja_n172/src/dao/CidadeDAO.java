@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import model.Cidade;
+import model.Cliente;
 import model.Estado;
 
 /**
@@ -128,7 +129,12 @@ public class CidadeDAO {
                 
             }
         }
+        
+        
+        
         return null;
+        
+        
     }
    
 }

@@ -36,6 +36,18 @@ public class Cliente {
     
     public Cliente() {
     }
+    
+    public Cliente(String nome) {
+        this.nome = nome;
+    }
+    
+    public Cliente(int codigo) {
+        this.codigo = codigo;
+    }
+    
+    public Cliente(String nome, String telefone) {
+        this.nome = nome;
+    }
 
     public Cliente(int codigo, String nome, String cpf, String sexo, String telefone, Calendar nascimento, boolean temFilhos, Cidade cidade, Estado estado) {
         this.codigo = codigo;

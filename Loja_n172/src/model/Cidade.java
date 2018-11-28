@@ -19,6 +19,7 @@ public class Cidade {
     public Cidade() {
         
     }
+    
 
     public Cidade(int codigo, String nome, Estado estado) {
         this.codigo = codigo;

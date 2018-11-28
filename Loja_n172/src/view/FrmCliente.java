@@ -10,6 +10,7 @@ import dao.EstadoDAO;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import model.Cidade;
+import model.Cliente;
 import model.Estado;
 
 /**
@@ -183,6 +184,11 @@ public class FrmCliente extends javax.swing.JInternalFrame {
 
         btnSalvar.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         btnSalvar.setText("SALVAR");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         btnLimpar.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         btnLimpar.setText("Limpar");
@@ -336,6 +342,15 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         Estado estado = (Estado) cmbEstado.getSelectedItem();
         carregarCidades( estado.getCodigo() );
     }//GEN-LAST:event_cmbEstadoItemStateChanged
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        String nome = txtNome.getText();
+        String cpf = txtCPF.getText();
+        Cidade cidade = (Cidade) cmbCidade.getSelectedItem();
+        
+        Cliente cliente = new Cliente();
+        cliente.setNome( txtNome.getText() );
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
