@@ -6,9 +6,12 @@
 package view;
 
 import dao.CidadeDAO;
+import dao.ClienteDAO;
 import dao.EstadoDAO;
+import java.util.Calendar;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import model.Cidade;
 import model.Cliente;
 import model.Estado;
@@ -25,43 +28,41 @@ public class FrmCliente extends javax.swing.JInternalFrame {
     public FrmCliente() {
         initComponents();
         carregarEstados();
-        carregarCidades( 0 );
+        carregarCidades(0);
     }
-    
-    private void carregarEstados(){
-        
+
+    private void carregarEstados() {
+
         List<Estado> lista = EstadoDAO.getEstados();
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         Estado fake = new Estado("Selecione...");
-        fake.setCodigo( 0 );
+        fake.setCodigo(0);
         model.addElement(fake);
         for (Estado estado : lista) {
-            model.addElement( estado );
+            model.addElement(estado);
         }
-        cmbEstado.setModel( model );
+        cmbEstado.setModel(model);
     }
-    
-    private void carregarCidades(int codEstado){
+
+    private void carregarCidades(int codEstado) {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         Cidade fake = new Cidade();
-        fake.setCodigo( 0 );
-        if( codEstado == 0 ){
+        fake.setCodigo(0);
+        if (codEstado == 0) {
             fake.setNome("Selecione um estado...");
             model.addElement(fake);
             cmbCidade.setEnabled(false);
-        }else{
+        } else {
             List<Cidade> lista = CidadeDAO.getCidades(codEstado);
             fake.setNome("Selecione...");
             model.addElement(fake);
             for (Cidade cidade : lista) {
-                model.addElement( cidade );
+                model.addElement(cidade);
             }
             cmbCidade.setEnabled(true);
         }
         cmbCidade.setModel(model);
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -195,6 +196,8 @@ public class FrmCliente extends javax.swing.JInternalFrame {
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Salário: ");
+
+        txtSalario.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
 
         cbCasado.setText("Casado");
 
@@ -340,16 +343,67 @@ public class FrmCliente extends javax.swing.JInternalFrame {
 
     private void cmbEstadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbEstadoItemStateChanged
         Estado estado = (Estado) cmbEstado.getSelectedItem();
-        carregarCidades( estado.getCodigo() );
+        carregarCidades(estado.getCodigo());
     }//GEN-LAST:event_cmbEstadoItemStateChanged
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        String nome = txtNome.getText();
+    String nome = txtNome.getText();
         String cpf = txtCPF.getText();
         Cidade cidade = (Cidade) cmbCidade.getSelectedItem();
+
+        boolean cpfOk = true;
+        try {
+            String ultimoNumero = cpf.substring(13);
+            Integer.valueOf(ultimoNumero);
+        } catch (Exception e) {
+            cpfOk = false;
+        }
+
+        if (nome.isEmpty() || !cpfOk || cidade.getCodigo() == 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Os campos Nome, CPF e Cidade são obrigatórios!");
+        } else {
+
+            Cliente cliente = new Cliente();
+            cliente.setNome(txtNome.getText());
+            cliente.setTelefone( txtTelefone.getText() );
+            cliente.setCpf( cpf );
+            
+            String salario = txtSalario.getText();
+            if( !salario.isEmpty() ){
+                salario = salario.replace(",", ".");
+                cliente.setSalario( Double.valueOf( salario )  );
+            }else{
+                cliente.setSalario( 0 );
+            }
+            
+            cliente.setTemFilhos( cbTemFilhos.isSelected() );
+            cliente.setCasado(cbCasado.isSelected() );
+            
+            if( rbFeminino.isSelected() ){
+                cliente.setSexo("f");
+            }else{
+                if( rbMasculino.isSelected() ){
+                    cliente.setSexo("m");
+                }else{
+                    cliente.setSexo("");
+                }
+            }
+            
+           String data = txtNascimento.getText();
+           int dia = Integer.valueOf( data.substring( 0 , 2)  );
+           int mes = Integer.valueOf( data.substring( 3 , 5) ) -1;
+           int ano = Integer.valueOf( data.substring( 6 ) );
+           Calendar nascimento = Calendar.getInstance();
+           nascimento.set(ano, mes, dia);
+           cliente.setNascimento( nascimento );
+           cliente.setCidade( cidade );
+           
+            ClienteDAO.inserir( cliente );
+            
+            
+        }
         
-        Cliente cliente = new Cliente();
-        cliente.setNome( txtNome.getText() );
     }//GEN-LAST:event_btnSalvarActionPerformed
 
 
