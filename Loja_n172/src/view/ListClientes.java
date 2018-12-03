@@ -5,6 +5,12 @@
  */
 package view;
 
+import dao.ClienteDAO;
+import java.util.Calendar;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import model.Cliente;
+
 /**
  *
  * @author assparremberger
@@ -16,7 +22,50 @@ public class ListClientes extends javax.swing.JInternalFrame {
      */
     public ListClientes() {
         initComponents();
+        carregarTabela();
     }
+    
+    public void carregarTabela(){
+        List<Cliente> lista = ClienteDAO.getClientes();
+        String[] colunas = {"Código", "Nome", "Telefone",
+            "CPF","Data de Nascimento", "Sexo", "Casado?",
+            "Filhos?","Salário", "Cidade", "Estado"};
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers( colunas );
+        
+        for (Cliente cliente : lista) {
+            Calendar nasc = cliente.getNascimento();
+            String data = "" + 
+                        nasc.get( Calendar.DAY_OF_MONTH) +
+                 "/"+ ( nasc.get( Calendar.MONTH )+1) +
+                 "/"+   nasc.get( Calendar.YEAR );
+            
+            String casado = "Não";
+            if( cliente.isCasado() )
+                casado = "Sim";
+            String filhos = "Não";
+            if( cliente.isTemFilhos())
+                filhos = "Sim";
+            String sexo = "";
+            if( cliente.getSexo().equals("f") )
+                sexo = "Feminino";
+            if( cliente.getSexo().equals("m") )
+                sexo = "Masculino";
+            
+            Object[] dados = {
+                cliente.getCodigo(), 
+                cliente.getNome(), 
+                cliente.getTelefone(), 
+                cliente.getCpf(), data ,
+                sexo, casado, filhos , cliente.getSalario(),
+                cliente.getCidade().getNome(),
+                cliente.getCidade().getEstado().getNome()
+            };
+            model.addRow( dados );
+        }
+        tableCidades.setModel( model );
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -66,32 +115,28 @@ public class ListClientes extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(168, 168, 168)
+                .addGap(148, 148, 148)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(188, 188, 188)
+                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE))
-                .addContainerGap())
+                .addComponent(jScrollPane1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
                         .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
