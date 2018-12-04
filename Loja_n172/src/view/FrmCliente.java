@@ -25,10 +25,44 @@ public class FrmCliente extends javax.swing.JInternalFrame {
     /**
      * Creates new form FrmCliente
      */
+    private Cliente cliente;
     public FrmCliente() {
         initComponents();
         carregarEstados();
         carregarCidades(0);
+        cliente = null;
+        lblCodigo.setVisible(false);
+        lblCodigoValor.setVisible(false);
+    }
+    
+    public FrmCliente(int codigo) {
+        initComponents();
+        carregarEstados();
+        carregarCidades(0);
+        cliente = ClienteDAO.getClienteByCodigo(codigo);
+        carregarFormulario();
+        lblCodigo.setVisible(true);
+        lblCodigoValor.setVisible(true);
+    }
+    
+    private void carregarFormulario(){
+        lblCodigoValor.setText( String.valueOf( cliente.getCodigo()));
+        txtNome.setText( cliente.getNome() );
+        txtCPF.setText(cliente.getCpf());
+        txtTelefone.setText(cliente.getTelefone());
+        txtSalario.setText( String.valueOf( cliente.getSalario() ) );
+        
+        String data = "";
+        int dia = cliente.getNascimento().get(Calendar.DAY_OF_MONTH);
+        int mes = cliente.getNascimento().get(Calendar.MONTH) + 1;
+        int ano = cliente.getNascimento().get(Calendar.YEAR);
+        if( dia < 10 ) data += "0";
+        data += dia + "/";
+        if( mes < 10 ) data += "0";
+        data += mes + "/" + ano;
+        txtNascimento.setText(data);
+        
+        
     }
 
     private void carregarEstados() {

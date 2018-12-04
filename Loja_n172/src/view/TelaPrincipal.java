@@ -145,7 +145,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuCidadeListarActionPerformed
 
     private void menuClienteListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClienteListarActionPerformed
-        ListClientes tela = new ListClientes();
+        ListClientes tela = new ListClientes(jdpPainel);
         jdpPainel.add(tela);
         tela.setVisible(true);
     }//GEN-LAST:event_menuClienteListarActionPerformed

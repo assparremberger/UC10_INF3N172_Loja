@@ -8,6 +8,8 @@ package view;
 import dao.ClienteDAO;
 import java.util.Calendar;
 import java.util.List;
+import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Cliente;
 
@@ -20,9 +22,12 @@ public class ListClientes extends javax.swing.JInternalFrame {
     /**
      * Creates new form ListCidades
      */
-    public ListClientes() {
+    private JDesktopPane jdpTelaInicial;
+    
+    public ListClientes(JDesktopPane jdpTelaInicial) {
         initComponents();
         carregarTabela();
+        this.jdpTelaInicial = jdpTelaInicial;
     }
     
     public void carregarTabela(){
@@ -63,7 +68,7 @@ public class ListClientes extends javax.swing.JInternalFrame {
             };
             model.addRow( dados );
         }
-        tableCidades.setModel( model );
+        tableClientes.setModel( model );
     }
     
 
@@ -78,7 +83,7 @@ public class ListClientes extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tableCidades = new javax.swing.JTable();
+        tableClientes = new javax.swing.JTable();
         btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
 
@@ -91,7 +96,7 @@ public class ListClientes extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Lista de Clientes");
 
-        tableCidades.setModel(new javax.swing.table.DefaultTableModel(
+        tableClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -102,13 +107,23 @@ public class ListClientes extends javax.swing.JInternalFrame {
                 "Título 1", "Nome do Cliente"
             }
         ));
-        jScrollPane1.setViewportView(tableCidades);
+        jScrollPane1.setViewportView(tableClientes);
 
         btnEditar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -143,12 +158,39 @@ public class ListClientes extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int linha = tableClientes.getSelectedRow();
+        if( linha < 0 ){
+            JOptionPane.showMessageDialog(this, 
+                    "Um cliente deve ser selecionado!");
+        }else{
+            int codigo = (int) tableClientes.getValueAt(linha, 0);
+            Cliente cliente = new Cliente(codigo);
+            ClienteDAO.excluir(cliente);
+            carregarTabela();
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        int linha = tableClientes.getSelectedRow();
+        if( linha < 0 ){
+            JOptionPane.showMessageDialog(this, 
+                    "Um cliente deve ser selecionado!");
+        }else{
+            int codigo = (int) tableClientes.getValueAt(linha, 0);
+            FrmCliente tela = new FrmCliente( codigo );
+            this.jdpTelaInicial.add(tela);
+            tela.setVisible( true );
+            
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tableCidades;
+    private javax.swing.JTable tableClientes;
     // End of variables declaration//GEN-END:variables
 }

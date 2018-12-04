@@ -119,6 +119,63 @@ public class ClienteDAO {
         return lista;
     }
     
+    public static Cliente getClienteByCodigo(int codigo) {
+        
+        
+        String sql = "SELECT c.codigo, c.nome, c.telefone, c.cpf, "
+                + " c.salario, c.filhos, c.casado, c.sexo, m.codigo, "
+                + " m.nome, e.codigo, e.nome, "
+                + " DATE_FORMAT( c.dataNascimento , '%d' ) , "
+                + " DATE_FORMAT( c.dataNascimento , '%m' ) , "
+                + " DATE_FORMAT( c.dataNascimento , '%Y' )  "
+                + " FROM clientes c "
+                + " INNER JOIN cidades m ON m.codigo = c.codCidade "
+                + " INNER JOIN estados e ON e.codigo = m.codEstado "
+                + " WHERE c.codigo = " + codigo;
+        
+        ResultSet rs = Conexao.consultar(sql);
+        if( rs != null ){
+            try {
+                
+                rs.next();                   
+                    Estado estado = new Estado();
+                    estado.setCodigo( rs.getInt(11));
+                    estado.setNome( rs.getString(12) );
+                    
+                    Cidade cidade = new Cidade();
+                    cidade.setCodigo( rs.getInt(9) );
+                    cidade.setNome( rs.getString(10) );
+                    cidade.setEstado( estado );
+                    
+                    Cliente cliente = new Cliente();
+                    cliente.setCodigo( rs.getInt(1) );
+                    cliente.setNome( rs.getString(2) );
+                    cliente.setTelefone( rs.getString(3) );
+                    cliente.setCpf( rs.getString(4) );
+                    cliente.setSalario( rs.getDouble(5) );
+                    cliente.setTemFilhos( rs.getBoolean(6) );
+                    cliente.setCasado(rs.getBoolean(7) );
+                    cliente.setSexo(rs.getString(8) );
+                    
+                    Calendar nascimento = Calendar.getInstance();
+                    nascimento.set( rs.getInt(15), 
+                            rs.getInt(14) , rs.getInt(13));
+                    
+                    cliente.setNascimento( nascimento );
+                    cliente.setCidade( cidade );
+                    
+                return cliente;
+                
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.toString() );
+                return null;
+            }
+        }else{
+            return null;
+        }
+        
+    }
+    
     
 }
 
