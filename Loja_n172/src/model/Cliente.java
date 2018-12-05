@@ -7,6 +7,11 @@ import java.util.Calendar;
  * @author assparremberger
  */
 public class Cliente {
+    
+    public static final String FEMININO = "f";
+    public static final String MASCULINO = "m";
+    
+    
     private int codigo;
     private String nome, cpf, sexo, telefone;
     private Calendar nascimento;

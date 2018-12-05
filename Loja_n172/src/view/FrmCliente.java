@@ -21,6 +21,7 @@ import model.Estado;
  * @author assparremberger
  */
 public class FrmCliente extends javax.swing.JInternalFrame {
+    
 
     /**
      * Creates new form FrmCliente
@@ -62,6 +63,34 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         data += mes + "/" + ano;
         txtNascimento.setText(data);
         
+        if( cliente.getSexo().equals( Cliente.FEMININO ) )
+            rbFeminino.setSelected(true);
+        
+        if( cliente.getSexo().equals( Cliente.MASCULINO ) )
+            rbMasculino.setSelected(true);
+        
+        cbTemFilhos.setSelected( cliente.isTemFilhos() );
+        cbCasado.setSelected( cliente.isCasado());
+        
+        int codEstado = cliente.getCidade().getEstado().getCodigo();
+        
+        List<Estado> estados = EstadoDAO.getEstados();
+        for( int i = 0; i < estados.size(); i++){
+            if( estados.get(i).getCodigo() == codEstado){
+                int posicao = i + 1;
+                cmbEstado.setSelectedIndex(posicao);
+                break;
+            }
+        }
+        List<Cidade> cidades = CidadeDAO.getCidades(codEstado);
+        int codCidade = cliente.getCidade().getCodigo();
+        for( int i = 0; i < cidades.size(); i++){
+            if( cidades.get(i).getCodigo() == codCidade){
+                int posicao = i + 1;
+                cmbCidade.setSelectedIndex(posicao);
+                break;
+            }
+        }
         
     }
 
@@ -420,10 +449,10 @@ public class FrmCliente extends javax.swing.JInternalFrame {
             cliente.setCasado(cbCasado.isSelected() );
             
             if( rbFeminino.isSelected() ){
-                cliente.setSexo("f");
+                cliente.setSexo(Cliente.FEMININO);
             }else{
                 if( rbMasculino.isSelected() ){
-                    cliente.setSexo("m");
+                    cliente.setSexo(Cliente.MASCULINO);
                 }else{
                     cliente.setSexo("");
                 }
