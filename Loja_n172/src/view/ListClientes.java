@@ -165,9 +165,17 @@ public class ListClientes extends javax.swing.JInternalFrame {
                     "Um cliente deve ser selecionado!");
         }else{
             int codigo = (int) tableClientes.getValueAt(linha, 0);
-            Cliente cliente = new Cliente(codigo);
-            ClienteDAO.excluir(cliente);
-            carregarTabela();
+            Cliente cliente = ClienteDAO.getClienteByCodigo(codigo);
+            
+            int resposta = JOptionPane.showConfirmDialog
+                 (this, 
+                  "Confirma a exclusão do cliente "+cliente.getNome()+"?",
+                  "Excluir Cliente",
+                  JOptionPane.YES_NO_OPTION);
+            if( resposta == JOptionPane.YES_OPTION ){
+                ClienteDAO.excluir(cliente);
+                carregarTabela();
+            }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -178,7 +186,7 @@ public class ListClientes extends javax.swing.JInternalFrame {
                     "Um cliente deve ser selecionado!");
         }else{
             int codigo = (int) tableClientes.getValueAt(linha, 0);
-            FrmCliente tela = new FrmCliente( codigo );
+            FrmCliente tela = new FrmCliente( codigo, this );
             this.jdpTelaInicial.add(tela);
             tela.setVisible( true );
             

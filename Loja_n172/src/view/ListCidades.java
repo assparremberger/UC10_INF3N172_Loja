@@ -31,6 +31,7 @@ public class ListCidades extends javax.swing.JInternalFrame {
         carregarEstados();
         carregarTabela();
         this.jdpTelaInicial = jdpPainel;
+        tableCidades.setAutoCreateRowSorter(true);
     }
     
     private void carregarEstados(){

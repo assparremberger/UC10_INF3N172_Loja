@@ -27,6 +27,9 @@ public class FrmCliente extends javax.swing.JInternalFrame {
      * Creates new form FrmCliente
      */
     private Cliente cliente;
+    
+    private ListClientes telaListClientes;
+    
     public FrmCliente() {
         initComponents();
         carregarEstados();
@@ -36,7 +39,8 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         lblCodigoValor.setVisible(false);
     }
     
-    public FrmCliente(int codigo) {
+    public FrmCliente(int codigo, ListClientes telaListClientes) {
+        this.telaListClientes = telaListClientes;
         initComponents();
         carregarEstados();
         carregarCidades(0);
@@ -431,8 +435,13 @@ public class FrmCliente extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this,
                     "Os campos Nome, CPF e Cidade são obrigatórios!");
         } else {
-
-            Cliente cliente = new Cliente();
+            
+            boolean novo = false;
+            if( cliente == null){
+                cliente = new Cliente();
+                novo = true;
+            }
+//            Cliente cliente = new Cliente();
             cliente.setNome(txtNome.getText());
             cliente.setTelefone( txtTelefone.getText() );
             cliente.setCpf( cpf );
@@ -467,14 +476,19 @@ public class FrmCliente extends javax.swing.JInternalFrame {
            cliente.setNascimento( nascimento );
            cliente.setCidade( cidade );
            
-            ClienteDAO.inserir( cliente );
-            
-            
+           if( novo ){
+               ClienteDAO.inserir( cliente );
+               limparFormulario();
+           }else{
+               ClienteDAO.editar( cliente );
+               telaListClientes.carregarTabela();
+               this.dispose();
+           } 
         }
         
     }//GEN-LAST:event_btnSalvarActionPerformed
 
-    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+    private void limparFormulario(){
         txtNome.setText("");
         txtTelefone.setText("");
         txtCPF.setText("");
@@ -484,6 +498,10 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         cbCasado.setSelected(false);
         cbTemFilhos.setSelected(false);
         cmbEstado.setSelectedIndex(0);
+    }
+    
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        limparFormulario();
     }//GEN-LAST:event_btnLimparActionPerformed
 
 

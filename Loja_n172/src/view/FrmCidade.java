@@ -198,6 +198,7 @@ public class FrmCidade extends javax.swing.JInternalFrame {
             cidade.setEstado( (Estado) cmbEstado.getSelectedItem() );
             if( nova ){
                 CidadeDAO.inserir(cidade);
+                cidade = null;
             }else{
                 CidadeDAO.editar( cidade );
                 telaListCidades.carregarTabela();
